@@ -1,0 +1,34 @@
+name: Sendoff Release
+description: >-
+  GitHub-native release tool for PR-driven changelogs, release
+  branches, and publishing
+branding:
+  icon: send
+  color: orange
+
+inputs:
+  phase:
+    description: >-
+      Release phase to run (auto, prepare, propose, or publish)
+    required: false
+    default: auto
+  changelog-file:
+    description: Path to the changelog file relative to repository root
+    required: false
+    default: CHANGELOG.md
+  changelog-heading-level:
+    description: Markdown heading prefix used for version entries
+    required: false
+    default: "##"
+
+runs:
+  using: composite
+  steps:
+    - name: Run Sendoff
+      shell: bash
+      env:
+        SENDOFF_PHASE: ${{ inputs.phase }}
+        SENDOFF_CHANGELOG_FILE: ${{ inputs.changelog-file }}
+        SENDOFF_CHANGELOG_HEADING_LEVEL: ${{ inputs.changelog-heading-level }}
+      run: |
+        echo "Sendoff bootstrap action (phase=${SENDOFF_PHASE}, changelog=${SENDOFF_CHANGELOG_FILE}, heading=${SENDOFF_CHANGELOG_HEADING_LEVEL})"
